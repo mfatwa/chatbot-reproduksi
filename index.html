@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chatbot Kesehatan Reproduksi</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f9;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    header {
+        background: #4CAF50;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    #chatbox {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message {
+        max-width: 75%;
+        padding: 10px 15px;
+        margin: 5px 0;
+        border-radius: 15px;
+        line-height: 1.4;
+    }
+
+    .user {
+        align-self: flex-end;
+        background: #4CAF50;
+        color: white;
+    }
+
+    .bot {
+        align-self: flex-start;
+        background: #e0e0e0;
+    }
+
+    .input-area {
+        display: flex;
+        padding: 10px;
+        background: white;
+        border-top: 1px solid #ddd;
+    }
+
+    input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        outline: none;
+    }
+
+    button {
+        margin-left: 10px;
+        padding: 10px 15px;
+        border: none;
+        background: #4CAF50;
+        color: white;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #45a049;
+    }
+
+    @media (max-width: 600px) {
+        .message {
+            max-width: 90%;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+Chatbot Kesehatan Reproduksi
+</header>
+
+<div id="chatbox"></div>
+
+<div class="input-area">
+    <input type="text" id="userInput" placeholder="Tanya sesuatu..." />
+    <button onclick="sendMessage()">Kirim</button>
+</div>
+
+<script>
+const faq = {
+"bertanggung jawab": "Sikap bertanggung jawab terhadap reproduksi melibatkan menjaga kebersihan organ reproduksi...",
+"pengaruh pola makan": "Pola makan sangat mempengaruhi kesehatan reproduksi...",
+"pubertas": "Pubertas adalah proses alami di mana tubuh anak berubah menjadi dewasa...",
+"infeksi menular seksual": "IMS adalah infeksi yang ditularkan melalui kontak seksual...",
+"kesehatan reproduksi": "Kesehatan reproduksi adalah keadaan sejahtera secara fisik, mental, dan sosial...",
+"menjaga kesehatan": "Menjaga kesehatan organ reproduksi itu penting untuk mencegah penyakit...",
+"bahaya seks bebas": "Bahaya seks bebas antara lain IMS, kehamilan tidak diinginkan...",
+"perilaku sehat": "Contoh perilaku sehat pada remaja meliputi olahraga, makan bergizi...",
+"hak reproduksi": "Remaja perlu mengetahui hak-hak reproduksinya untuk melindungi diri...",
+"stress": "Stres dapat mengganggu hormon dan berdampak pada kesehatan reproduksi..."
+};
+
+function addMessage(text, sender) {
+    const chatbox = document.getElementById("chatbox");
+    const msg = document.createElement("div");
+    msg.classList.add("message", sender);
+    msg.innerText = text;
+    chatbox.appendChild(msg);
+    chatbox.scrollTop = chatbox.scrollHeight;
+}
+
+function sendMessage() {
+    const input = document.getElementById("userInput");
+    const text = input.value.toLowerCase();
+
+    if (text.trim() === "") return;
+
+    addMessage(text, "user");
+
+    if (text === "keluar") {
+        addMessage("Terima kasih! Sampai jumpa 👋", "bot");
+        input.value = "";
+        return;
+    }
+
+    let found = false;
+
+    for (let key in faq) {
+        if (text.includes(key)) {
+            addMessage(faq[key], "bot");
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        addMessage("Maaf, saya tidak mengerti pertanyaan Anda.", "bot");
+    }
+
+    input.value = "";
+}
+
+// Enter key
+document.getElementById("userInput").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        sendMessage();
+    }
+});
+
+// pesan awal
+addMessage("Halo! Tanyakan tentang kesehatan reproduksi. Ketik 'keluar' untuk selesai.", "bot");
+</script>
+
+</body>
+</html>
